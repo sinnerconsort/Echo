@@ -171,6 +171,37 @@
     opacity: 1;
 }
 
+/* ─── Length Bar ─── */
+.echo-length-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px 0 12px;
+    font-size: 11px;
+    color: var(--SmartThemeQuoteColor, #888);
+}
+
+.echo-length-bar i {
+    font-size: 10px;
+    opacity: 0.6;
+    width: 14px;
+    text-align: center;
+}
+
+.echo-length-bar input[type="range"] {
+    flex: 1;
+    height: 3px;
+    accent-color: #8cb4ff;
+}
+
+.echo-length-label {
+    font-size: 10px;
+    min-width: 48px;
+    text-align: right;
+    color: #8cb4ff;
+    font-weight: 600;
+}
+
 /* ─── Generate Button ─── */
 .echo-generate-btn {
     margin: 8px 12px;

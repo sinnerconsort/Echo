@@ -27,6 +27,7 @@ const defaultSettings = {
     selectedProfile: 'current',
     // Generation
     replyCount: 3,
+    replyLength: 2,     // 1-4: short/medium/long/extra
     contextDepth: 6,
     // Persona — Identity
     persona_name: '',
@@ -220,6 +221,14 @@ function buildReplyPrompt(chatContext) {
         customSection = `\nADDITIONAL DIRECTION:\n${customPrompt}\n`;
     }
 
+    const lengthLabels = {
+        1: 'Keep replies SHORT — 1-2 sentences max. Punchy and concise.',
+        2: 'Write MEDIUM length replies — 1-2 short paragraphs.',
+        3: 'Write LONGER replies — 2-3 paragraphs with detail.',
+        4: 'Write DETAILED replies — 3-4 paragraphs with rich description, internal thoughts, and actions.'
+    };
+    const lengthInstruction = lengthLabels[extensionSettings.replyLength || 2];
+
     return `You are a skilled roleplay writer. Your job is to write replies AS a specific persona character in a roleplay conversation. You are NOT the AI — you are ghostwriting for the USER's character.
 
 CRITICAL RULES:
@@ -229,6 +238,7 @@ CRITICAL RULES:
 - Your dialogue examples are TONAL REFERENCES — capture the style and energy, never copy them word-for-word.
 - Each reply option should take a slightly different approach or emotional angle while staying in character.
 - Include actions, thoughts, and dialogue as appropriate for the scene.
+- LENGTH: ${lengthInstruction}
 
 PERSONA:
 ${personaBlock || `Name: ${personaName}\n(No detailed persona provided — write naturally as this character)`}
@@ -236,7 +246,7 @@ ${moodSection}${customSection}
 RECENT CONVERSATION:
 ${chatContext.messages}
 
-Generate exactly ${count} distinct reply options for ${personaName}. Each should be 1-3 paragraphs and take a different angle on how ${personaName} might respond in this moment.
+Generate exactly ${count} distinct reply options for ${personaName}. Each should take a different angle on how ${personaName} might respond in this moment.
 
 Format each reply with a separator line. Use this exact format:
 ---REPLY 1---
@@ -584,6 +594,12 @@ function createPanel() {
                     <textarea id="echo-custom-prompt" class="echo-textarea" placeholder="Specific direction for this reply... (e.g. 'respond with a question about their past')" rows="2"></textarea>
                 </div>
 
+                <div class="echo-length-bar">
+                    <i class="fa-solid fa-text-height" title="Reply length"></i>
+                    <input type="range" id="echo-reply-length" min="1" max="4" value="${extensionSettings.replyLength}" step="1">
+                    <span id="echo-reply-length-label" class="echo-length-label">${['', 'Short', 'Medium', 'Long', 'Detailed'][extensionSettings.replyLength || 2]}</span>
+                </div>
+
                 <button id="echo-generate" class="echo-generate-btn">
                     <i class="fa-solid fa-comment-dots"></i> Generate Replies
                 </button>
@@ -665,6 +681,14 @@ function createPanel() {
 
     // Generate
     $('#echo-generate').on('click', generateReplies);
+
+    // Reply length slider
+    const lengthNames = ['', 'Short', 'Medium', 'Long', 'Detailed'];
+    $('#echo-reply-length').on('input', function () {
+        extensionSettings.replyLength = parseInt($(this).val());
+        $('#echo-reply-length-label').text(lengthNames[extensionSettings.replyLength]);
+        saveSettings();
+    });
 
     // Mood toggles
     $('#echo-toggle-mood').on('click', function () {
