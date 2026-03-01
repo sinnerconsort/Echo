@@ -1,0 +1,11 @@
+{
+    "display_name": "Echo",
+    "loading_order": 151,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Judas",
+    "version": "1.0.0",
+    "homePage": ""
+}
