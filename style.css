@@ -319,6 +319,49 @@
     color: #aa6666;
 }
 
+/* ─── Profile Bar ─── */
+.echo-profile-bar {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.echo-profile-dropdown {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    padding: 4px 6px;
+}
+
+.echo-profile-bar .menu_button_icon {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+/* ─── Chat Context Badge ─── */
+.echo-badge {
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: rgba(140, 180, 255, 0.15);
+    color: #8cb4ff;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.echo-chatctx-hint {
+    font-size: 10px;
+    color: var(--SmartThemeQuoteColor, #666);
+    font-style: italic;
+    margin-top: 4px;
+    text-align: right;
+}
+
 /* ─── Form Elements ─── */
 .echo-label {
     display: block;
