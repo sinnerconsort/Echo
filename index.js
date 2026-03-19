@@ -357,8 +357,18 @@ function cleanReply(text) {
     cleaned = cleaned.replace(/^\s*(?:Here(?:'s| is) (?:a|my|the) (?:reply|response|answer)[:\.\!]?\s*)/i, '');
     cleaned = cleaned.replace(/^\s*(?:Sure[,!]?\s*(?:here(?:'s| is))?[:\s]*)/i, '');
 
+    // Strip Paramnesia/preset bleed — Final Review, QC checks, Director meta
+    cleaned = cleaned.replace(/\n?\s*(?:Final Review|Quality Check|Review against|Compliance check|Director Note|DIRECTOR NOTE|HECKLE)[\s\S]*/si, '');
+    cleaned = cleaned.replace(/\n?\s*\[(?:PLANT|FIRED|DIRECTOR NOTE|HECKLE)[:\s][^\]]*\]\s*/gi, '');
+
+    // Strip lines that are clearly meta/evaluation (start with * and read like notes)
+    cleaned = cleaned.replace(/\n\s*\*\s*(?:The |This |Note:|Check:|Ensure|Connection|Review)[\s\S]*/si, '');
+
     // Strip trailing meta-comments
-    cleaned = cleaned.replace(/\n\s*(?:\*?\*?Note\*?\*?|---|\[End\]|This reply).*/si, '');
+    cleaned = cleaned.replace(/\n\s*(?:\*?\*?Note\*?\*?|---|\[End\]|This reply|T\+\d).*/si, '');
+
+    // Strip any remaining content that's clearly not prose (bullet lists of rules/checks)
+    cleaned = cleaned.replace(/\n\s*[-•]\s*(?:Avoid|Ensure|Check|Verify|Remember|Rule|Must|Should|Don't).*$/gim, '');
 
     return cleaned.trim();
 }
